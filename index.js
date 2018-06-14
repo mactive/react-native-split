@@ -81,6 +81,14 @@ if (!isFileExists(config.baseEntry.index)) {
 
 console.log('Work on root: ' + config.root);
 console.log('Dev mode: ' + config.dev);
+
+
+// const bundlePath = path.resolve(config.bundleDir, `all.${config.platform}.jsbundle`);
+// let bundleData = fs.readFileSync(bundlePath, 'utf-8');
+// const parser = new Parser(bundleData, config);
+// parser.splitBundle();
+
+
 bundle(config, (err, data) => {
   if (err) throw err;
   console.log('===[Bundle] Finish!===');

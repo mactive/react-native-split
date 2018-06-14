@@ -14,8 +14,10 @@
  * limitations under the License.
  *
  * Created by desmond on 4/16/17.
- * @flow
  */
+
+// @flow
+
 
 const babylon = require('babylon');
 const traverse = require('babel-traverse').default;
@@ -102,6 +104,7 @@ class Parser {
   
   splitBundle() {
     const outputDir = this._config.outputDir;
+    const platform = this._config.platform;
     Util.ensureFolder(outputDir);
     const bundleAST = babylon.parse(this._codeBlob, {
       sourceType: 'script',
@@ -116,7 +119,7 @@ class Parser {
       const subBundlePath = path.resolve(outputDir, subBundle.name);
       Util.ensureFolder(subBundlePath);
       
-      const codePath = path.resolve(subBundlePath, 'index.bundle');
+      const codePath = path.resolve(subBundlePath, `${subBundle.name}.${platform}.jsbundle`);
       fs.writeFileSync(codePath, code);
       console.log('[Code] Write code to ' + codePath);
       if (subBundle.assetRenames) {

@@ -53,13 +53,14 @@ function bundle(config: Config, callback: Callback) : void {
   Util.ensureFolder(config.bundleDir);
 
   const tmpBase = injectCodesToBase(config);
-  const bundlePath = path.resolve(config.bundleDir, 'index.bundle');
+  const bundlePath = path.resolve(config.bundleDir, `all.${config.platform}.jsbundle`);
 
   let cmd = 'react-native bundle';
   cmd += ' --entry-file ' + tmpBase;
   cmd += ' --bundle-output ' + bundlePath;
   cmd += ' --assets-dest ' + config.bundleDir;
   cmd += ' --platform ' + config.platform;
+  cmd += ' --dev ' + config.dev;
 
   console.log('===[Bundle] Start!===');
   console.log(cmd);
