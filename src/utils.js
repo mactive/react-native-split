@@ -165,6 +165,14 @@ export function replaceModuleIdWithName(codeBlob : string, modules : any) : stri
   return codeBlob;
 }
 
+export function getModuleDependencyFromNode(arrayNode: object, start : number, end : number) : Array<number> {
+  const dependency = 
+    arrayNode.elements
+      .filter( node  => node.type === LITERAL_NUM )
+      .map(item => item.value)
+  return dependency;
+}
+
 export function getModuleDependency(codeBlob : string, start : number, end : number) : Array<number> {
   const dependency = [];
   const bodyString = codeBlob.substring(start, end);

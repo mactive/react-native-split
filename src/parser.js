@@ -148,9 +148,11 @@ class Parser {
       
       let {start, end} = node;
       console.log(node.kind, node.type);
-      if (Util.isPolyfillCall(node, this._config.dev)) { // push polyfill codes to base.
+      if (Util.isPolyfillCall(node, this._config.dev)) { 
+        // push polyfill codes to base.
         this._polyfills.push({start, end});
       } else if (Util.isModuleCall(node)) {
+        // 最下面那两个类似 requrie(11) 调用
         this._moduleCalls.push({start, end});
       } else if (Util.isModuleDeclaration(node)) {
         moduleCount++;
@@ -160,14 +162,14 @@ class Parser {
         const module : Module = {
           id: moduleId,
           name: moduleName,
-          dependencies: this._getModuleDependency(args[0].body),
+          dependencies: this._getModuleDependency(args[2]),
           code: {start, end},
           idCodeRange: {
             start: args[1].start - node.start,
             end: args[1].end - node.start
           }
         };
-        
+
         if (Util.isAssetModule(moduleName)) {
           module.isAsset = true;
           module.assetConfig = Object.assign({}, Util.getAssetConfig(node), { moduleId });
@@ -306,10 +308,11 @@ class Parser {
     console.log('Module ' + module.name + ' added to bundle ' + name + '. (' + added + ' more dependency added too)');
   }
   
+   // RN45 需要在body中便利, 现在不需要了this._getModuleDependency(args[0].body),
   _getModuleDependency(bodyNode: any) {
-    if (bodyNode.type === 'BlockStatement') {
+    if (bodyNode.type === 'ArrayExpression') {
       let {start, end} = bodyNode;
-      return Util.getModuleDependency(this._codeBlob, start, end);
+      return Util.getModuleDependencyFromNode(bodyNode, start, end);
     }
     return [];
   }
