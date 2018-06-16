@@ -147,7 +147,7 @@ class Parser {
       }
       
       let {start, end} = node;
-      
+      console.log(node.kind, node.type);
       if (Util.isPolyfillCall(node, this._config.dev)) { // push polyfill codes to base.
         this._polyfills.push({start, end});
       } else if (Util.isModuleCall(node)) {
@@ -171,7 +171,7 @@ class Parser {
         if (Util.isAssetModule(moduleName)) {
           module.isAsset = true;
           module.assetConfig = Object.assign({}, Util.getAssetConfig(node), { moduleId });
-          console.log('Get asset module ' + moduleName, module.assetConfig);
+          // console.log('Get asset module ' + moduleName, module.assetConfig);
         }
 
         if (!reactEntryModule && Util.isReactNativeEntry(moduleName)) {
@@ -199,8 +199,8 @@ class Parser {
         this._modules[moduleId] = module;
         console.log('Module ' + moduleName + '(' + moduleId + ') dependency:' + JSON.stringify(module.dependencies));
       } else {
-        console.log(require('util').inspect(node, false, null));
-        console.log('Cannot parse node!', this._codeBlob.substring(node.start, node.end));
+        // console.log(require('util').inspect(node, false, null));
+        // console.log('Cannot parse node!', this._codeBlob.substring(node.start, node.end));
       }
     });
     

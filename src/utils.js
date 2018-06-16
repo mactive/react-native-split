@@ -32,6 +32,7 @@ const UNARY_EXPR = 'UnaryExpression';
 const CALL_EXPR = 'CallExpression';
 const FUNC_EXPR = 'FunctionExpression';
 const COND_EXPR = 'ConditionalExpression';
+const THIS_EXPR = 'ThisExpression';
 const IDENTIFIER = 'Identifier';
 const LITERAL_NUM = 'NumericLiteral';
 const LITERAL_STR = 'StringLiteral';
@@ -128,7 +129,7 @@ export function isPolyfillCall(node : any, dev : boolean) : boolean {
         && expr.callee.params.length === 1
         && expr.callee.params[0].type === IDENTIFIER
         && expr.arguments.length === 1
-        && expr.arguments[0].type === COND_EXPR;
+        && expr.arguments[0].type === THIS_EXPR; // Changed 0.53.3 
     };
     if (dev) {
       return node.type === EXPR_STMT && isPolyfillCallExpr(node.expression);
